@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>About</title>
+	<link rel="icon" href="images/icon.png" type="image/x-icon">
+	<script src="https://kit.fontawesome.com/1ff2bafd28.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+	<section id="header">
+		<a href="index.html" class="logo"> <i class="fa-solid fa-cookie-bite"></i> <strong>DEVDAR </strong>Sweets </a>
+		<div>
+			<ul id="navbar">
+				<li><a  href="index.html">Home</a></li>
+				<li><a href="shop.html">Shop</a></li>
+				<li><a class="active" href="about.html">About</a></li>
+				<li><a href="contact.html">Contact</a></li>
+				
+				<a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
+				<div class="dropdown">
+					<h6 id="greet" class="user-greeting"></h6>
+					<div class="dropdown-content">
+					  <!-- <a href="mycart.html">My Cart</a> -->
+					  <a href="myorders.html">My Orders</a>
+					  <a href="profile.html">Profile</a>
+					</div>
+			</ul>
+		</div>
+		<div id="mobile">
+			<i id="bar" class="fas fa-outdent"></i>
+		</div>
+	</section>
+	<section id="page-header" class="about-header">
+		<h2 >The taste of INDIA</h2>
+		<h3 >Quality that delights, In every bite.</h3>
+	</section>
+    <section id="about-head" class="section-p1">
+        <img src="images/about.jpg" alt="">
+        <div>
+            <h2>DevDar Sweets</h2>
+            <p>We take immense pride in sharing the rich and diverse flavors of South India with the world. Our journey is a sweet adventure that we've embarked upon, rooted in tradition, and flavored with innovation. We're more than just a sweet company; we're the bearers of a cultural legacy, and we're excited to tell you our story.</p>
+			<p>We are delighted to celebrate a decade of serving you with the sweet flavors of South India! It's been an incredible journey, and we are proud to share this milestone with you. Over the past 10 years, our South Indian sweet company has been dedicated to bringing you the authentic taste of this vibrant and diverse region's rich culinary traditions.</p>
+            <marquee bgcolor="#ccc" loop="-1" scrollamount="5" width="100%" >Join us in celebrating the sweetness of life, one sweet at a time, and discover the soul of South Indian sweets with Southern Delights. </marquee>
+        </div>
+    </section>
+    <section id="feature" class="section-p1">
+		<div class="fe-box">
+			<img src="images/f2.png">
+			<h6>Free Shipping</h6>
+		</div>
+		<div class="fe-box">
+			<img src="images/f3.png">
+			<h6>Save Money</h6>
+		</div>
+		<div class="fe-box">
+			<img src="images/f4.png" height="100">
+			<h6>100% Vegetarion</h6>
+		</div>
+		<div class="fe-box">
+			<img src="images/f5.png">
+			<h6>Happy Customers</h6>
+		</div>
+		<div class="fe-box">
+			<img src="images/f6.png" height="100">
+			<h6>Hygienic </h6>
+		</div>
+		<div class="fe-box">
+			<img src="images/f7.jpg" height="100">
+			<h6>In-store pickup</h6>
+		</div>
+	</section>
+	<footer class="section-p1">
+		<div class="col">
+			<h4>Contact</h4>
+			<p><strong>Adress:</strong>532 MG Road, Street 29, Bengaluru </p>
+			<p><strong>Phone:</strong>08198-229312/(+91)93xxxxx785</p>
+			<p><strong>Hours:</strong>8:00 - 20:00 Mon-Sat</p>
+			<div class="follow">
+				<h4>Follow us</h4>
+				<div class="icons">
+					<i class="fab fa-facebook"></i>
+					<i class="fab fa-twitter"></i>
+					<i class="fab fa-instagram"></i>
+					<i class="fab fa-youtube"></i>
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<h4>About</h4>
+			<a href="#">About Us</a>
+			<a href="#">Delivery Information</a>
+			<a href="#">Privacy Policy</a>
+			<a href="#">Terms & Conditions</a>
+			<a href="#">Contact Us</a>
+		</div>
+		<div class="col">
+			<h4>My Account</h4>
+			<a href="#">Sign In</a>
+			<a href="#">View Cart</a>
+			<a href="#">Help</a>
+		</div>
+		<div class="copyright">
+			<hr><hr>
+			<br>
+			<p>&copy; Copyright 2023, Devdar Sweets</p>
+		</div>
+		
+
+	</footer>
+
+	<script>
+		const bar = document.getElementById('bar');
+		const close = document.getElementById('close');
+		const nav = document.getElementById('navbar');
+
+		if(bar) {
+		bar.addEventListener('click', () => {
+			nav.classList.add('active');
+		})
+		}
+
+		if(close) {
+		close.addEventListener('click', () => {
+			nav.classList.remove('active')
+		})
+	}
+
+	</script>
+	<script>
+        let UserCreds = JSON.parse(sessionStorage.getItem("user-creds"));
+        let UserInfo = JSON.parse(sessionStorage.getItem("user-info"));
+    
+        let GreetHead = document.getElementById('greet');
+        let Navbar = document.getElementById('navbar');
+        let SignoutBtn; 
+        let CreateAccountLink; 
+    
+        let Signout = () => {
+            sessionStorage.removeItem("user-creds");
+            sessionStorage.removeItem("user-info");
+            GreetHead.innerText = '';
+            if (SignoutBtn) {
+                SignoutBtn.style.display = 'none'; // hide the sign-out link
+            }
+            if (CreateAccountLink) {
+				CreateAccountLink.classList.add('CreateAccountLink1');  //class for CreateAccountLink after signout
+                CreateAccountLink.innerText = 'Login';
+                CreateAccountLink.href = 'login.html';
+                CreateAccountLink.style.display = 'block'; 
+                CreateAccountLink.classList.add('navbar-link'); 
+            }
+        }
+    
+        let CheckCred = () => {
+            if (UserCreds) {
+				GreetHead.classList.add('username');
+                GreetHead.innerText = ` ${UserInfo.username} ▼`;
+                const navbarItem = document.createElement('li');
+    
+                // Sign out link
+                SignoutBtn = document.createElement('a');
+                SignoutBtn.href = '#'; 
+		SignoutBtn.classList.add('signout')
+                SignoutBtn.innerText = 'Sign Out';
+                SignoutBtn.onclick = Signout;
+                SignoutBtn.classList.add('navbar-link'); 
+                navbarItem.appendChild(SignoutBtn);
+    
+                // Create account link
+                CreateAccountLink = document.createElement('a');
+                CreateAccountLink.style.display = 'none'; 
+                CreateAccountLink.classList.add('navbar-link'); 
+                Navbar.appendChild(navbarItem);
+                Navbar.appendChild(CreateAccountLink);
+            } else {
+                CreateAccountLink = document.createElement('a');
+                CreateAccountLink.href = 'login.html';
+				CreateAccountLink.classList.add('CreateAccountLink');  //login button at the time u have not logged in 
+                CreateAccountLink.innerText = 'Login';
+                CreateAccountLink.classList.add('navbar-link'); 
+                Navbar.appendChild(CreateAccountLink);
+            }
+        };
+    
+        window.addEventListener('load', CheckCred);
+    </script>
+</body>
+
+
+</html>

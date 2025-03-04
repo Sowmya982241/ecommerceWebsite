@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myorders</title>
+    <link rel="icon" href="images/icon.png" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/1ff2bafd28.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+	<style>
+		body {
+			background-color: #e6e6e6;
+		}
+
+		.card {
+			display: flex;
+			align-items: center;
+			margin-bottom: 10px;
+		}
+
+		.card img {
+			max-width: 100px;
+			max-height: 100px;
+			margin-right: 20px;
+		}
+		.section-p1{
+			margin-top: 120px;
+		}
+	</style>
+</head>
+<body>
+    <section id="header">
+        <a href="index.html" class="logo"> <i class="fa-solid fa-cookie-bite"></i> <strong>DEVDAR </strong>Sweets </a>
+        <div>
+			<ul id="navbar">
+				<li><a class="active" href="index.html">Home</a></li>
+				<li><a href="shop.html">Shop</a></li>
+				<li><a href="about.html">About</a></li>
+				<li><a href="contact.html">Contact</a></li>
+				
+				<a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
+				<div class="dropdown">
+					<h6 id="greet" class="user-greeting"></h6>
+					<div class="dropdown-content">
+					  <!-- <a href="mycart.html">My Cart</a> -->
+					  <a href="myorders.html">My Orders</a>
+					  <a href="profile.html">Profile</a>
+					</div>
+			</ul>
+		</div>
+
+        <div id="mobile">
+			<i id="bar" class="fas fa-outdent"></i>
+		</div>
+    </section>
+
+	<div class="orders-section">
+		<div class="order-header" id="orderHeader">Order Details</div>
+		<div id="ordersList">
+			<div class="order-box" id="order1">
+				<div id="orderItemsContainer"></div>
+			</div>
+		</div>
+		<div id="footer" class="footer">
+			<div id="totalPrice" class="total-price">
+				<!-- Total price will be dynamically added here -->
+			</div>
+		</div>
+	</div>
+
+ 
+ 
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var orderCounter = localStorage.getItem('orderCounter') ? parseInt(localStorage.getItem('orderCounter')) : 1;
+            var orderDetails = JSON.parse(sessionStorage.getItem('orderDetails')) || [];
+            var canceledOrders = JSON.parse(localStorage.getItem('canceledOrders')) || [];
+            var ordersListDiv = document.getElementById('ordersList');
+            var orderItems = '';
+    
+            // Function to cancel order
+            function cancelOrder(event) {
+                var orderId = event.target.getAttribute('data-order-id');
+                var orderBox = document.getElementById(orderId);
+                if (orderBox) {
+                    var cancelMessage = document.createElement('p');
+                    cancelMessage.innerText = 'Order ' + orderId + ' has been canceled.';
+                    orderBox.appendChild(cancelMessage);
+    
+                    // Hide the cancel button after canceling the order
+                    var cancelButton = orderBox.querySelector('button');
+                    if (cancelButton) {
+                        cancelButton.style.display = 'none';
+                    }
+    
+                    canceledOrders.push(orderId);
+                    localStorage.setItem('canceledOrders', JSON.stringify(canceledOrders));
+                }
+            }
+    
+            if (orderDetails.length === 0) {
+                ordersListDiv.innerHTML = "<p>You need to first add items to your cart.</p>";
+                document.getElementById('orderHeader').style.display = 'none';
+            } else {
+                var randomId = `ORDER${orderCounter}`;
+                var date = new Date();
+                var orderDateTime = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}, ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    
+                if (!localStorage.getItem(randomId)) {
+                    localStorage.setItem(randomId, JSON.stringify({
+                        orderDetails: orderDetails,
+                        orderDateTime: orderDateTime
+                    }));
+                }
+    
+                for (let i = orderCounter; i >= 1; i--) {
+                    var key = `ORDER${i}`;
+                    var order = JSON.parse(localStorage.getItem(key));
+                    if (order) {
+                        var orderDateTime = order.orderDateTime;
+                        var orderDetails = order.orderDetails;
+    
+                        var orderBox = document.createElement('div');
+                        orderBox.className = 'order-box';
+                        orderBox.id = key;
+                        orderBox.innerHTML = `<div>Order #${i} placed on ${orderDateTime}</div>`;
+    
+                        orderDetails.forEach(function (item) {
+                            var card = document.createElement('div');
+                            card.className = 'card';
+                            var img = document.createElement('img');
+                            img.src = item.image;
+                            img.alt = item.name;
+                            var details = document.createElement('div');
+                            details.innerHTML = `<p><strong>Name:</strong> ${item.name}</p>
+                                                <p><strong>Price:</strong> ${item.price}</p>
+                                                <p><strong>Quantity:</strong> ${item.quantity}</p>`;
+                            card.appendChild(img);
+                            card.appendChild(details);
+                            orderBox.appendChild(card);
+                        });
+    
+                        var cancelButton = document.createElement('button');
+                        cancelButton.innerText = 'Cancel Order';
+                        cancelButton.style.marginTop = '10px';
+                        cancelButton.setAttribute('data-order-id', key); // Set the data attribute
+                        cancelButton.onclick = cancelOrder;
+    
+                        orderBox.appendChild(cancelButton);
+                        ordersListDiv.appendChild(orderBox);
+    
+                        // Check if the order has been canceled and display the cancel message
+                        if (canceledOrders.includes(key)) {
+                            var cancelMessage = document.createElement('p');
+                            cancelMessage.innerText = key + ' has been canceled.';
+                            orderBox.appendChild(cancelMessage);
+                            cancelButton.style.display = 'none';
+                        }
+                    }
+                }
+    
+                localStorage.setItem('orderCounter', orderCounter.toString());
+            }
+        });
+    </script>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+	
+
+<!-- for user name -->
+<p><br></p>
+<footer class="section-p1">
+    
+    <div class="col">
+        <h4>Contact</h4>
+        <p><strong>Adress:</strong>532 MG Road, Street 29, Bengaluru </p>
+        <p><strong>Phone:</strong>08198-229312/(+91)93xxxxx785</p>
+        <p><strong>Hours:</strong>8:00 - 20:00 Mon-Sat</p>
+        <div class="follow">
+            <h4>Follow us</h4>
+            <div class="icons">
+                <i class="fab fa-facebook"></i>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-youtube"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <h4>About</h4>
+        <a href="#">About Us</a>
+        <a href="#">Delivery Information</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Contact Us</a>
+    </div>
+    <div class="col">
+        <h4>My Account</h4>
+        <a href="#">Sign In</a>
+        <a href="#">View Cart</a>
+        <a href="#">Help</a>
+    </div>
+    <div class="copyright">
+        <hr><hr>
+        <br>
+        <p>&copy; Copyright 2023, Devdar Sweets</p>
+    </div>
+</footer>
+<!-- 00000000000000000000000000000000000000000000000000 -->
+
+<script>
+
+const bar = document.getElementById('bar');
+const close = document.getElementById('close');
+const nav = document.getElementById('navbar');
+
+if(bar) {
+bar.addEventListener('click', () => {
+    nav.classList.add('active');
+})
+}
+
+if(close) {
+close.addEventListener('click', () => {
+    nav.classList.remove('active')
+})
+}
+</script>
+
+<script>
+    let UserCreds = JSON.parse(sessionStorage.getItem("user-creds"));
+    let UserInfo = JSON.parse(sessionStorage.getItem("user-info"));
+    
+    let GreetHead = document.getElementById('greet');
+    let Navbar = document.getElementById('navbar');
+    let SignoutBtn; // declare SignoutBtn outside functions to access it globally
+    let CreateAccountLink; // declare CreateAccountLink outside functions to access it globally
+    
+    let Signout = () => {
+        sessionStorage.removeItem("user-creds");
+        sessionStorage.removeItem("user-info");
+        GreetHead.innerText = '';
+        if (SignoutBtn) {
+            SignoutBtn.style.display = 'none'; // hide the sign-out link
+        }
+    }
+    
+    let CheckCred = () => {
+        if (UserCreds) {
+			GreetHead.classList.add('username');
+            GreetHead.innerText = ` ${UserInfo.username} ▼`;
+            const navbarItem = document.createElement('li');
+    
+            // Sign out link
+            SignoutBtn = document.createElement('a');
+            SignoutBtn.href = 'index.html';
+	    SignoutBtn.classList.add('signout')
+            SignoutBtn.innerText = 'Sign Out';
+            SignoutBtn.onclick = Signout;
+            SignoutBtn.classList.add('navbar-link'); 
+            navbarItem.appendChild(SignoutBtn);
+    
+            // Create account link
+            CreateAccountLink = document.createElement('a');
+            CreateAccountLink.style.display = 'none'; 
+            CreateAccountLink.classList.add('navbar-link'); 
+            Navbar.appendChild(navbarItem);
+            Navbar.appendChild(CreateAccountLink);
+        } else {
+            CreateAccountLink = document.createElement('a');
+            CreateAccountLink.href = 'login.html'; 
+            CreateAccountLink.innerText = 'Login';
+            CreateAccountLink.classList.add('navbar-link');
+            Navbar.appendChild(CreateAccountLink);
+         }
+    };
+    
+    window.addEventListener('load', CheckCred);
+</script>
+</body>
+</html>

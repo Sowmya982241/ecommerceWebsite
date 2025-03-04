@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <link rel="icon" href="images/icon.png" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/1ff2bafd28.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <section id="header">
+        <a href="index.html" class="logo"> <i class="fa-solid fa-cookie-bite"></i> <strong>DEVDAR </strong>Sweets </a>
+        <div>
+			<ul id="navbar">
+				<li><a href="index.html">Home</a></li>
+				<li><a class="active" href="shop.html">Shop</a></li>
+				<li><a href="about.html">About</a></li>
+				<li><a href="contact.html">Contact</a></li>
+				
+				<a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
+				<div class="dropdown">
+					<h6 id="greet" class="user-greeting"></h6>
+					<div class="dropdown-content">
+					  <!-- <a href="mycart.html">My Cart</a> -->
+					  <a href="myorders.html">My Orders</a>
+					  <a href="profile.html">Profile</a>
+					</div>
+			</ul>
+		</div>
+
+        <div id="mobile">
+			<i id="bar" class="fas fa-outdent"></i>
+		</div>
+    </section>
+    <section id="cart">
+        <div class="container">
+            <div class="head">
+                <div class="shopping">
+                    <li id="lg-bag"><i class="fa-solid fa-cart-shopping"></i></li>
+                    <span class="quantity">0</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="page-header">
+        <h2>Super value offers</h2>
+        <p>Indulge your senses in a world of confectionery wonders. </p>
+    </section>
+    <section id="filter">
+        <div id="price-filter">
+            <label for="price-range">Price Range: </label>
+            <select name="min-price" id="min-price">
+                <option value="Min-price">Minimum-Price</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="300">300</option>
+                <option value="400">400</option>
+                <option value="500">500</option>
+                <option value="600">600</option>
+                <option value="700">700</option>
+                <option value="800">800</option>
+                <option value="900">900</option>
+                <option value="1000">1000</option>
+
+            </select>
+            <select name="max-price" id="max-price">
+                <option value="Max-price">Maximum-Price</option>
+
+                <option value="500">500</option>
+                <option value="600">600</option>
+                <option value="700">700</option>
+                <option value="800">800</option>
+                <option value="900">900</option>
+                <option value="1000">1000</option>
+                <option value="1100">1100</option>
+                <option value="1200">1200</option>
+                <option value="1300">1300</option>
+                <option value="1400">1400</option>
+                <option value="1500">1500</option>
+                <option value="1600">1600</option>
+                <option value="1700">1700</option>
+                <option value="1800">1800</option>
+                <option value="1900">1900</option>
+                <option value="2000">2000</option>
+            </select>
+            <button id="filter-button">Filter</button>
+        </div>        
+    </section>
+    <div class="list">
+        <!-- JavaScript will add products dynamically here -->
+    </div>
+
+    <div class="card">
+        <h1>My Cart</h1>
+        <div class="closeShopping"><img  src="https://i.postimg.cc/jdcyTVBk/circle-xmark-regular.png" height="40" width="40"></div>
+        <ul class="listCard"></ul>
+        <div class="checkOut">
+            <div class="total1">Total</div>
+            <div class="total">0</div>
+            <input type="button" value="Checkout">
+        </div>
+    </div>
+    <br>
+
+    <!-- Footer Section -->
+    <footer class="section-p1">
+        <div class="col">
+            <h4>Contact</h4>
+            <p><strong>Address:</strong> 532 MG Road, Street 29, Bengaluru</p>
+            <p><strong>Phone:</strong> 08198-229312/(+91)93xxxxx785</p>
+            <p><strong>Hours:</strong> 8:00 - 20:00 Mon-Sat</p>
+            <div class="follow">
+                <h4>Follow us</h4>
+                <div class="icons">
+                    <i class="fab fa-facebook"></i>
+                    <i class="fab fa-twitter"></i>
+                    <i class="fab fa-instagram"></i>
+                    <i class="fab fa-youtube"></i>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h4>About</h4>
+            <a href="#">About Us</a>
+            <a href="#">Delivery Information</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms & Conditions</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <div class="col">
+            <h4>My Account</h4>
+            <a href="#">Sign In</a>
+            <a href="#">View Cart</a>
+            <a href="#">Help</a>
+        </div>
+        <div class="copyright">
+            <hr><hr>
+            <br>
+            <p>&copy; 2023, Devdar Sweets</p>
+        </div>
+    </footer>
+
+
+<!-- the function of checkout page -->
+<script>
+let checkoutButton = document.querySelector('.checkOut input[type="button"]');
+
+checkoutButton.onclick = function() {
+    // Check if the user is logged in
+    let userCreds = JSON.parse(sessionStorage.getItem("user-creds"));
+
+    if (!userCreds) {
+        // If the user is not logged in, redirect to the login page
+        window.location.href = "login.html";
+    } else {
+        // If the user is logged in, proceed with the checkout process
+        // ... (existing functionality for checkout)
+        window.location.href="profile.html";
+    }
+};
+</script>
+
+
+
+
+<script >
+    const bar = document.getElementById('bar');
+    const close = document.getElementById('close');
+    const nav = document.getElementById('navbar');
+
+    if(bar) {
+    bar.addEventListener('click', () => {
+        nav.classList.add('active');
+    })
+    }
+
+    if(close) {
+    close.addEventListener('click', () => {
+        nav.classList.remove('active')
+    })
+}
+let list = document.querySelector('.list');
+let listCard = document.querySelector('.listCard');
+let body = document.querySelector('body');
+let total = document.querySelector('.total');
+let quantity = document.querySelector('.quantity');
+let shopping = document.querySelector('.shopping');
+let closeShopping = document.querySelector('.closeShopping');
+
+shopping.addEventListener('click', () => {
+    body.classList.add('active');
+});
+
+closeShopping.addEventListener('click', () => {
+    body.classList.remove('active');
+});
+
+let products = [
+    { id: 1,
+        name: 'Motichoor laddu',
+        image: 'https://i.postimg.cc/h4krd7qx/800389791-1-anand-sweets-and-savouries-sweets-motichoor-laddu.webp',
+        price: 630
+    },
+    {
+        id: 2,
+        name: 'Kaaju Katli',
+        image: 'https://i.postimg.cc/XNTDKY5M/0ee1479c-d032-4822-89d2-3d008e78ec5c.jpg',
+        price: 1100
+    },
+    {
+        id: 3,
+        name: 'Mysore Pak',
+        image: 'https://i.postimg.cc/zG9B8Wbt/OIP.jpg',
+        price: 800
+    },
+    {
+        id: 4,
+        name: 'Dharwad Peda',
+        image: 'https://i.postimg.cc/dDPHJ5FQ/dharwad-peda-500x500.webp',
+        price: 500
+    },
+    {
+        id: 5,
+        name: 'Champakali',
+        image: 'https://i.postimg.cc/T1G0SpJh/OIP.jpg',
+        price: 450
+    },
+    {
+        id: 6,
+        name: 'Rasgulla',
+        image: 'https://i.postimg.cc/52G3JPSh/R.jpg',
+        price: 700
+    },
+    {
+        id: 7,
+        name: 'Dhood Peda',
+        image: 'https://i.postimg.cc/Ss4cQH2v/OIP.jpg',
+        price: 900
+    },
+    {
+        id: 8,
+        name: 'Dry Fruit Laddu',
+        image: 'https://i.postimg.cc/Z5rRYn8J/Dry-Fruit-3-1-1536x1536.jpg',
+        price: 2000
+    },
+];
+
+let listCards = JSON.parse(sessionStorage.getItem('listCards')) || [];
+
+
+function initApp() {
+    products.forEach((value, key) => {
+        let newDiv = document.createElement('div');
+        newDiv.classList.add('item');
+        newDiv.innerHTML = `
+            <img src="${value.image}">
+            <div class="title">${value.name}</div>
+            <div class="price">RS. ${value.price.toLocaleString()} /KG </div>
+            <button id = "add" onclick="addToCard(${key})">Add To Cart</button>`;
+            list.appendChild(newDiv);
+    });
+}
+
+function addToCard(key) {
+    if (listCards[key] == null) {
+        listCards[key] = JSON.parse(JSON.stringify(products[key]));
+        listCards[key].quantity = 1;
+        let buttons = document.querySelectorAll('.item button');
+        buttons[key].innerText = 'Item Added';
+        if (key === 3) {
+            buttons[key].innerText = 'Added to Cart';
+        }
+    }
+    reloadCard();
+}
+
+function reloadCard() {
+    listCard.innerHTML = '';
+    let count = 0;
+    let totalPrice = 0;
+    listCards.forEach((value, key) => {
+        if (value != null) {
+            let newDiv = document.createElement('li');
+            newDiv.innerHTML = `
+                <div><img src="${value.image}"/></div>
+                <div>${value.name}</div>
+                <div>${value.price.toLocaleString()}</div>
+                <div>
+                    <button onclick="changeQuantity(${key}, ${value.quantity - 1})">-</button>
+                    <div class="count">${value.quantity}</div>
+                    <button onclick="changeQuantity(${key}, ${value.quantity + 1})">+</button>
+                </div>`;
+            listCard.appendChild(newDiv);
+            totalPrice += value.price;
+            count += value.quantity;
+        }
+    });
+    total.innerText = totalPrice.toLocaleString();
+    quantity.innerText = count;
+}
+function changeQuantity(key, quantity) {
+    if (quantity === 0) {
+        delete listCards[key];
+        let buttons = document.querySelectorAll('.item button');
+        buttons[key].innerText = 'Add To Cart';
+        if (key === 3) {
+            buttons[key].innerText = 'Add To Cart';
+        }
+    } else {
+        listCards[key].quantity = quantity;
+        listCards[key].price = quantity * products[key].price;
+    }
+    reloadCard();
+}
+
+ function saveCartToSessionStorage() {
+            sessionStorage.setItem('listCards', JSON.stringify(listCards));
+        }
+
+        window.addEventListener('beforeunload', saveCartToSessionStorage);
+
+        window.addEventListener('load', () => {
+            initApp();
+            reloadCard();
+        });
+
+</script>
+
+<script>
+const filterButton = document.getElementById('filter-button');
+filterButton.addEventListener('click', applyFilter);
+
+function applyFilter() {
+    const minPrice = parseFloat(document.getElementById('min-price').value);
+    const maxPrice = parseFloat(document.getElementById('max-price').value);
+
+    const filteredProducts = products.filter(product => {
+        const productPrice = product.price;
+        return (!minPrice || productPrice >= minPrice) && (!maxPrice || productPrice <= maxPrice);
+    });
+
+    list.innerHTML = '';
+
+    filteredProducts.forEach((product, key) => {
+        const newDiv = document.createElement('div');
+        newDiv.classList.add('item');
+        newDiv.innerHTML = `
+            <img src="${product.image}">
+            <div class="title">${product.name}</div>
+            <div class="price">RS. ${product.price.toLocaleString()} /KG </div>
+            <button onclick="addToCard(${key})">Add To Cart</button>`;
+        list.appendChild(newDiv);
+    });
+
+}
+
+    let UserCreds = JSON.parse(sessionStorage.getItem("user-creds"));
+    let UserInfo = JSON.parse(sessionStorage.getItem("user-info"));
+
+    let GreetHead = document.getElementById('greet');
+    let Navbar = document.getElementById('navbar');
+    let SignoutBtn; 
+    let CreateAccountLink; 
+
+    let Signout = () => {
+        sessionStorage.removeItem("user-creds");
+        sessionStorage.removeItem("user-info");
+        GreetHead.innerText = '';
+        if (SignoutBtn) {
+            SignoutBtn.style.display = 'none'; 
+        }
+        if (CreateAccountLink) {
+            CreateAccountLink.classList.add('CreateAccountLink1');  //class for CreateAccountLink after signout
+            CreateAccountLink.innerText = 'Login';
+            CreateAccountLink.href = 'login.html';
+            CreateAccountLink.style.display = 'block'; 
+            CreateAccountLink.classList.add('navbar-link'); 
+        }
+    }
+
+    let CheckCred = () => {
+        if (UserCreds) {
+            GreetHead.classList.add('username');
+            GreetHead.innerText = `${UserInfo.username} ▼`;
+            const navbarItem = document.createElement('li');
+
+            // Sign out link
+            SignoutBtn = document.createElement('a');
+            SignoutBtn.href = '#'; 
+	    SignoutBtn.classList.add('signout')
+            SignoutBtn.innerText = 'Sign Out';
+            SignoutBtn.onclick = Signout;
+            SignoutBtn.classList.add('navbar-link'); 
+            navbarItem.appendChild(SignoutBtn);
+
+            // Create account link
+            CreateAccountLink = document.createElement('a');
+            CreateAccountLink.style.display = 'none';
+            CreateAccountLink.classList.add('navbar-link'); 
+            Navbar.appendChild(navbarItem);
+            Navbar.appendChild(CreateAccountLink);
+        } else {
+            CreateAccountLink = document.createElement('a');
+            CreateAccountLink.href = 'login.html';
+            CreateAccountLink.classList.add('CreateAccountLink');  //login button at the time u have not logged in
+            CreateAccountLink.innerText = 'Login';
+            CreateAccountLink.classList.add('navbar-link'); 
+            Navbar.appendChild(CreateAccountLink);
+        }
+    };
+
+    window.addEventListener('load', CheckCred);
+
+</script>
+
+
+<!-- for making after clicking chckout button here then mycart page items are visible -->
+
+
+
+</body>
+
+</html>

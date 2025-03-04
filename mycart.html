@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>my Cart</title>
+    <link rel="icon" href="images/icon.png" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/1ff2bafd28.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .card img {
+            max-width: 100px;
+            max-height: 100px;
+            margin-right: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin:10px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+    </style>
+</head>
+<body>
+    <section id="header">
+        <a href="index.html" class="logo"> <i class="fa-solid fa-cookie-bite"></i> <strong>DEVDAR </strong>Sweets </a>
+        <div>
+			<ul id="navbar">
+				<li><a class="active" href="index.html">Home</a></li>
+				<li><a href="shop.html">Shop</a></li>
+				<li><a href="about.html">About</a></li>
+				<li><a href="contact.html">Contact</a></li>
+				
+				<a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
+				<div class="dropdown">
+					<h6 id="greet" class="user-greeting"></h6>
+					<div class="dropdown-content">
+					  <!-- <a href="mycart.html">My Cart</a> -->
+					  <a href="myorders.html">My Orders</a>
+					  <a href="profile.html">Profile</a>
+					</div>
+			</ul>
+		</div>
+
+        <div id="mobile">
+			<i id="bar" class="fas fa-outdent"></i>
+		</div>
+    </section>
+
+<div id="content">
+    <script>
+        // Print price, quantity, name, and image values from listCards in the console
+        window.addEventListener('load', function () {
+        console.log("Price, Quantity, Name, and Image:");
+        let listCards = JSON.parse(sessionStorage.getItem('listCards')) || [];
+        let filteredListCards = listCards.filter(item => item !== null);
+        filteredListCards.forEach(item => {
+            console.log(`Price: ${item.price}, Quantity: ${item.quantity}, Name: ${item.name}, Image: ${item.image}`);
+        });
+
+
+
+        
+        // Print price, quantity, name, and image values from listCards on the page
+        var outputDiv = document.createElement("div");
+        // outputDiv.innerHTML = "<h3>Price, Quantity, Name, and Image:</h3>";
+        filteredListCards.forEach(item => {
+            let card = document.createElement("div");
+            card.classList.add("card");
+            card.innerHTML = `
+                <img src="${item.image}" alt="${item.name}">
+                <div>
+                    <p><strong>Name:</strong> ${item.name}</p>
+                    <p><strong>Price:</strong> ${item.price}</p>
+                    <p><strong>Quantity:</strong> ${item.quantity}</p>
+                </div>`;
+            outputDiv.appendChild(card);
+        });
+        document.body.appendChild(outputDiv);
+
+        // Add Confirm Order button
+        // Add Confirm Order button
+// Add Confirm Order button
+var button = document.createElement("button");
+button.innerHTML = "Confirm Order";
+button.classList.add("button");
+button.onclick = function() {
+    // Storing the data in sessionStorage
+    sessionStorage.setItem('orderDetails', JSON.stringify(filteredListCards));
+    var orderCounter = parseInt(localStorage.getItem('orderCounter')) || 0; // Get the order counter from localStorage
+        var orderID = `order${orderCounter}`; // Generate the order ID
+        localStorage.setItem(orderID, JSON.stringify(filteredListCards));
+         // Increment the order counter
+         orderCounter++;
+        localStorage.setItem('orderCounter', orderCounter); // Update the order counter in localStorage
+
+
+
+    // Add your functionality here
+    var successMessage = document.createElement("p");
+    successMessage.classList.add("success-message");
+    successMessage.textContent = "Your order has been placed successfully!";
+    document.getElementById('content').appendChild(successMessage);
+    button.remove();
+
+    // Introduce a delay before clearing the cart if u want
+    setTimeout(function() {
+        sessionStorage.removeItem('listCards'); // Clear the cart after 3 seconds
+    }, 10); //  delay
+};
+
+document.body.appendChild(button);
+
+
+
+document.body.appendChild(button);
+
+        // document.body.appendChild(button);
+
+        // Add My Orders button
+        if (filteredListCards.length === 0) {
+        // Remove the Confirm Order button if there are no items in the cart
+        button.style.display = "none";
+
+        // Add a message to inform the user to add items to the cart
+        var message = document.createElement("p");
+        message.textContent = 'No items in the cart. Please add items to the cart.';
+        message.style.padding = "15px";
+    message.style.backgroundColor = "#f8d7da";
+    message.style.textAlign="center"
+    message.style.border = "1px solid #f5c6cb";
+    message.style.borderRadius = "5px";
+    message.style.color = "#721c24";
+    message.style.marginTop = "20px";
+        document.getElementById('content').appendChild(message);
+    } else {
+        // Add My Orders button only if there are items in the cart
+        var myOrdersButton = document.createElement("button");
+        myOrdersButton.innerHTML = '<p style="text-decoration: none; color: white;text-align:center;">My Orders</p>';
+        myOrdersButton.classList.add("button", "my-orders-button");
+        myOrdersButton.style.height="40px";
+        myOrdersButton.style.width="142px";
+        myOrdersButton.onclick = function () {
+            // Add your functionality here
+            window.location.href = "myorders.html"
+            console.log("View My Orders");
+        };
+        document.body.appendChild(myOrdersButton);
+    }
+});
+    </script>
+    
+</div>
+
+<p><br></p>
+
+<!-- 00000000000000000000000000000000000000000000000000 -->
+
+<script>
+
+const bar = document.getElementById('bar');
+const close = document.getElementById('close');
+const nav = document.getElementById('navbar');
+
+if(bar) {
+bar.addEventListener('click', () => {
+    nav.classList.add('active');
+})
+}
+
+if(close) {
+close.addEventListener('click', () => {
+    nav.classList.remove('active')
+})
+}
+</script>
+
+<script>
+let UserCreds = JSON.parse(sessionStorage.getItem("user-creds"));
+let UserInfo = JSON.parse(sessionStorage.getItem("user-info"));
+
+let GreetHead = document.getElementById('greet');
+let Navbar = document.getElementById('navbar');
+let SignoutBtn; // declare SignoutBtn outside functions to access it globally
+let CreateAccountLink; // declare CreateAccountLink outside functions to access it globally
+
+let Signout = () => {
+    sessionStorage.removeItem("user-creds");
+    sessionStorage.removeItem("user-info");
+    GreetHead.innerText = '';
+    if (SignoutBtn) {
+        SignoutBtn.style.display = 'none'; // hide the sign-out link
+    }
+    // if (CreateAccountLink) {
+    //     CreateAccountLink.innerText = 'Login';
+    //     CreateAccountLink.href = 'login.html';
+    //     CreateAccountLink.style.display = 'block'; // display the create account link
+    //     CreateAccountLink.classList.add('navbar-link'); // add the appropriate class for styling
+    // }
+}
+
+let CheckCred = () => {
+    if (UserCreds) {
+        GreetHead.classList.add('username');
+        GreetHead.innerText = `${UserInfo.username} ▼`;
+        const navbarItem = document.createElement('li');
+
+        // Sign out link
+        SignoutBtn = document.createElement('a');
+        SignoutBtn.href = 'index.html';
+	SignoutBtn.classList.add('signout')
+        SignoutBtn.innerText = 'Sign Out';
+        SignoutBtn.onclick = Signout;
+        SignoutBtn.classList.add('navbar-link'); 
+        navbarItem.appendChild(SignoutBtn);
+
+        // Create account link
+        CreateAccountLink = document.createElement('a');
+        CreateAccountLink.style.display = 'none'; 
+        CreateAccountLink.classList.add('navbar-link'); 
+        Navbar.appendChild(navbarItem);
+        Navbar.appendChild(CreateAccountLink);
+    } else {
+        CreateAccountLink = document.createElement('a');
+        CreateAccountLink.href = 'login.html'; 
+        CreateAccountLink.innerText = 'Login';
+        CreateAccountLink.classList.add('navbar-link');
+        Navbar.appendChild(CreateAccountLink);
+     }
+};
+
+window.addEventListener('load', CheckCred);
+</script>
+
+<!-- <footer class="section-p1" >
+    
+    <div class="col">
+        <h4>Contact</h4>
+        <p><strong>Adress:</strong>532 MG Road, Street 29, Bengaluru </p>
+        <p><strong>Phone:</strong>08198-229312/(+91)93xxxxx785</p>
+        <p><strong>Hours:</strong>8:00 - 20:00 Mon-Sat</p>
+        <div class="follow">
+            <h4>Follow us</h4>
+            <div class="icons">
+                <i class="fab fa-facebook"></i>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-youtube"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <h4>About</h4>
+        <a href="#">About Us</a>
+        <a href="#">Delivery Information</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Contact Us</a>
+    </div>
+    <div class="col">
+        <h4>My Account</h4>
+        <a href="#">Sign In</a>
+        <a href="#">View Cart</a>
+        <a href="#">Help</a>
+    </div>
+    <div class="copyright">
+        <hr><hr>
+        <br>
+        <p>&copy; Copyright 2023, Devdar Sweets</p>
+    </div>
+</footer> -->
+
+</body>
+</html>

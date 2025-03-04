@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My profile</title>
+    <link rel="icon" href="images/icon.png" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/1ff2bafd28.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .mycart {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    #myCartDiv {
+        /* display: inline-block; */
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    #myCartDiv a {
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+    }
+    #myCartDiv a button{
+        text-decoration: none;
+        color: rgb(255, 255, 255);
+    }
+
+    #myCartDiv:hover {
+        background-color: rgb(74, 171, 121);
+        border: 2px solid #4CAF50;
+    }
+    </style>
+</head>
+<body>
+    <section id="header">
+		<a href="index.html" class="logo"> <i class="fa-solid fa-cookie-bite"></i> <strong>DEVDAR </strong>Sweets </a>
+		<div>
+			<ul id="navbar">
+				<li><a  href="index.html">Home</a></li>
+				<li><a href="shop.html">Shop</a></li>
+				<li><a href="about.html">About</a></li>
+				<li><a  href="contact.html">Contact</a></li>
+				<a href="#" id="close"><i class="fa-solid fa-xmark"></i></a>
+				<div class="dropdown">
+					<h6 id="greet" class="user-greeting"></h6>
+					<div class="dropdown-content">
+					  <!-- <a href="mycart.html">My Cart</a> -->
+					  <a href="myorders.html">My Orders</a>
+					  <a href="profile.html">Profile</a>
+				</div>
+			</ul>
+		</div>
+		<div id="mobile">
+			<i id="bar" class="fas fa-outdent"></i>
+		</div>
+	</section>
+
+
+<div class="profile">
+    <h2>Profile</h2>
+    <form id="profileForm">
+        <input type="text" id="name" placeholder="Name" name="name" required><br>
+        <input type="tel" id="mobile1" placeholder="Mobile Number" name="phoneNumber" required><br>
+        <input type="email" id="email" placeholder="Email" name="email" required><br>
+        <input type="text" id="address" placeholder="Address" name="address" required><br>
+        <input type="text" id="pincode" placeholder="Pincode" name="pincode" required><br>
+        <button type="submit" id="save">Save Profile</button>
+    </form>
+    <div>
+        <a href="mycart.html" style="text-decoration: none;"><button id="myCartDiv" >My cart</button></a>
+    </div>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, query, where, getDocs, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyAgWVPZGPzaHoxDuSeWWDrDtcOcyeiWt_k",
+        authDomain: "devdar-ce8ba.firebaseapp.com",
+        databaseURL: "https://devdar-ce8ba-default-rtdb.firebaseio.com",
+        projectId: "devdar-ce8ba",
+        storageBucket: "devdar-ce8ba.appspot.com",
+        messagingSenderId: "562140767505",
+        appId: "1:562140767505:web:31605600f7c115bf1918b0",
+        measurementId: "G-XSYBG68LKZ"
+        };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    let save = document.getElementById("save");
+
+    save.addEventListener("click", async (event) => {
+        event.preventDefault(); // Prevent the form from being submitted
+
+        let Name = document.getElementById("name").value;
+        let mobile = document.getElementById("mobile1").value;
+        let email = document.getElementById("email").value;
+        let address = document.getElementById("address").value;
+        let pincode = document.getElementById("pincode").value;
+
+        if (!Name || !mobile || !email || !address || !pincode) {
+            Swal.fire({
+            text: 'Please fill in all the fields',
+            icon: 'error'
+        });
+
+            return;
+        }
+
+        const usersRef = collection(db, 'TheTeachersList');
+        const q = query(usersRef, where('Email', '==', email));
+        const querySnapshot = await getDocs(q);
+        let docExists = false;
+
+        querySnapshot.forEach(async (doc) => {
+            docExists = true;
+            try {
+                await updateDoc(doc.ref, {
+                    Name: Name,
+                    Mobile_Number: mobile,
+                    Email: email,
+                    Address: address,
+                    Pincode: pincode
+                });
+                console.log("Document updated with ID: ", email);
+                Swal.fire({
+                text: 'Data updated successfully',
+                icon: 'success'
+                });
+                showMyCartButton(); // Show the "My Cart" button after profile update
+            } catch (error) {
+                console.error("Error updating document: ", error);
+                alert("Unsuccessful operation, error: " + error);
+            }
+        });
+
+        if (!docExists) {
+            try {
+                const docRef = await addDoc(usersRef, {
+                    Name: Name,
+                    Mobile_Number: mobile,
+                    Email: email,
+                    Address: address,
+                    Pincode: pincode
+                });
+                console.log("New document added with ID: ", email);
+                Swal.fire({
+                text: 'Data updated successfully',
+                icon: 'success'
+                });
+                showMyCartButton(); // Show the "My Cart" button after profile update
+            } catch (error) {
+                console.error("Error adding document: ", error);
+                alert("Unsuccessful operation, error: " + error);
+            }
+        }
+    });
+
+    function showMyCartButton() {
+        const myCartDiv = document.getElementById("myCartDiv");
+        myCartDiv.style.display = "block";
+    }
+
+    // Initially hide the "My Cart" button
+    const myCartDiv = document.getElementById("myCartDiv");
+    myCartDiv.style.display = "none";
+</script>
+
+
+
+
+<footer class="section-p1">
+    <div class="col">
+        <h4>Contact</h4>
+        <p><strong>Adress:</strong>532 MG Road, Street 29, Bengaluru </p>
+        <p><strong>Phone:</strong>08198-229312/(+91)93xxxxx785</p>
+        <p><strong>Hours:</strong>8:00 - 20:00 Mon-Sat</p>
+        <div class="follow">
+            <h4>Follow us</h4>
+            <div class="icons">
+                <i class="fab fa-facebook"></i>
+                <i class="fab fa-twitter"></i>
+                <i class="fab fa-instagram"></i>
+                <i class="fab fa-youtube"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <h4>About</h4>
+        <a href="#">About Us</a>
+        <a href="#">Delivery Information</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms & Conditions</a>
+        <a href="#">Contact Us</a>
+    </div>
+    <div class="col">
+        <h4>My Account</h4>
+        <a href="login.html">Sign In</a>
+        <a href="shop.html">View Cart</a>
+        <a href="#">Help</a>
+    </div>
+    <div class="copyright">
+        <hr><hr>
+        <br>
+        <p>&copy; Copyright 2023, Devdar Sweets</p>
+    </div>
+</footer>
+<script>
+
+    const bar = document.getElementById('bar');
+    const close = document.getElementById('close');
+    const nav = document.getElementById('navbar');
+    
+    if(bar) {
+        bar.addEventListener('click', () => {
+            nav.classList.add('active');
+        })
+    }
+    
+        if(close) {
+        close.addEventListener('click', () => {
+            nav.classList.remove('active')
+        })
+        }
+    </script>
+     <script>
+        let UserCreds = JSON.parse(sessionStorage.getItem("user-creds"));
+        let UserInfo = JSON.parse(sessionStorage.getItem("user-info"));
+    
+        let GreetHead = document.getElementById('greet');
+        let Navbar = document.getElementById('navbar');
+        let SignoutBtn; // declare SignoutBtn outside functions to access it globally
+        let CreateAccountLink; // declare CreateAccountLink outside functions to access it globally
+    
+        let Signout = () => {
+            sessionStorage.removeItem("user-creds");
+            sessionStorage.removeItem("user-info");
+            GreetHead.innerText = '';
+            if (SignoutBtn) {
+                SignoutBtn.style.display = 'none'; // hide the sign-out link
+            }
+        }
+    
+        let CheckCred = () => {
+            if (UserCreds) {
+                GreetHead.classList.add('username');
+                GreetHead.innerText = ` ${UserInfo.username} ▼`;
+                const navbarItem = document.createElement('li');
+    
+                // Sign out link
+                SignoutBtn = document.createElement('a');
+                SignoutBtn.href = 'index.html'; // replace with the appropriate link
+		SignoutBtn.classList.add('signout')
+                SignoutBtn.innerText = 'Sign Out';
+                SignoutBtn.onclick = Signout;
+                SignoutBtn.classList.add('navbar-link'); // add the appropriate class for styling
+                navbarItem.appendChild(SignoutBtn);
+    
+                // Create account link
+                CreateAccountLink = document.createElement('a');
+                CreateAccountLink.style.display = 'none'; // hide the link by default
+                CreateAccountLink.classList.add('navbar-link'); // add the appropriate class for styling
+                Navbar.appendChild(navbarItem);
+                Navbar.appendChild(CreateAccountLink);
+            }
+            
+        };
+    
+        window.addEventListener('load', CheckCred);
+    </script>
+</body>
+
+
+</html>
